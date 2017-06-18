@@ -6,6 +6,9 @@
 # Date: 6/17/17
 # Author: Jeffrey Zic
 
+import csv
+import fileinput
+import sys
 
 class Team:
 
@@ -28,3 +31,35 @@ class Team:
         self.name = name
         self.size =-rosterSize
         self.level = level
+
+teams = []
+
+def readTeams(file,league):
+    """reads team info from csv files and stores it
+
+    :param files: list of files to read with team/player info
+    :param league: list of teams
+    :type files: str[]
+    :type league: Team[]
+    :rtype: Team[]
+    """
+
+    levels = ['MLB','AAA','AA','A+','A','A-','R']
+
+    with open(file) as f:
+
+        teamReader = csv.reader(f,delimter=',')
+        currentMLB = 0
+        level = 0
+
+        for row in f:
+            if row[0] != currentMLB:
+                level = 0
+                currentMLB = row[0]
+                league.append(Team.Team(row[0],'',0,levels[level]))
+                level += 1
+            league.append(Team.Team(row[1],'',0,levels[level]))
+            if level < 6:
+                level += 1
+
+    return league
