@@ -57,7 +57,7 @@ def readTeams(file,league):
 
     with open(file) as f:
 
-        teamReader = csv.reader(f,delimter=',')
+        teamReader = csv.reader(f)
         currentMLB = 0
         level = 0
 
@@ -65,9 +65,9 @@ def readTeams(file,league):
             if row[0] != currentMLB:
                 level = 0
                 currentMLB = row[0]
-                league[row[0]](Team.Team(row[0],'',0,levels[level]))
+                league[row[0]] = Team(row[0],'',0,levels[level])
                 level += 1
-            league[row[1]](Team.Team(row[1],'',0,levels[level]))
+            league[row[1]] = Team(row[1],'',0,levels[level])
             if level < 6:
                 level += 1
 
@@ -87,7 +87,7 @@ def nameTeams(file,league):
 
         with open(file) as f:
 
-            teamReader = csv.reader(f,delimiter=',')
+            teamReader = csv.reader(f)
 
             for row in f:
                 league[row[0]].name = row[1].strip('"') + row[2].strip('"')
@@ -106,7 +106,7 @@ def countPlayers(file,league):
 
     with open(file) as f:
 
-        teamReader = csv.reader(f,delimiter=',')
+        teamReader = csv.reader(f)
 
         for row in f:
             if league.has_key(row[1]):
