@@ -113,3 +113,11 @@ def countPlayers(file,league):
                 league[row[1]].rosterSize += 1
 
     return league
+
+if __name__ == '__main__':
+    teams = readTeams('./team_affiliations.csv',teams)
+    teams = nameTeams('./teams.csv',teams)
+    teams = countPlayers('./players.csv',teams)
+
+    for team in teams:
+        team.display()
