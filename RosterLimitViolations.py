@@ -41,6 +41,20 @@ class Team:
         print('Level: ' + self.level)
         print('\n')
 
+    def displayViolation(self):
+        """Displays the team info if it is under violaton"""
+
+        levels = ['MLB','AAA','AA','A+','A','A-','R']
+
+        index = levels.index(self.level)
+
+        if (index <= 4 and self.size > 27) or (index >4 and self.size > 35):
+            print('Name: ' + self.name)
+            print('ID: ' + self.id)
+            print('Size: '+ str(self.size))
+            print('Level: ' + self.level)
+            print('\n')
+
 teams = {}
 
 def readTeams(file,league):
@@ -130,4 +144,4 @@ if __name__ == '__main__':
     teams = countPlayers('./players.csv',teams)
 
     for team in teams:
-        teams[team].display()
+        teams[team].displayViolation()
