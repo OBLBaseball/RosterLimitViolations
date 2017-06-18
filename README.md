@@ -21,3 +21,5 @@ files exported from OOTP 17 and placed in the same folder:
 
 - Fix bug where MLB level players are overcounted
 - Only display teams in MLB/MiLB
+- Not all organizations have all levels down to Rookie (for example, LAA are missing
+A- level)
