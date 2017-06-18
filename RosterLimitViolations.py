@@ -97,4 +97,10 @@ def countPlayers(file,league):
 
     with open(file) as f:
 
-        team
+        teamReader = csv.reader(f,delimiter=',')
+
+        for row in f:
+            if league.has_key(row[1]):
+                league[row[1]].rosterSize += 1
+
+    return league
