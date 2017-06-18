@@ -110,7 +110,7 @@ def countPlayers(file,league):
 
         for row in f:
             if league.has_key(row[1]):
-                league[row[1]].rosterSize += 1
+                league[row[1]].size += 1
 
     return league
 
