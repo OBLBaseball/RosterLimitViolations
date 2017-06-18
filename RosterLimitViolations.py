@@ -37,7 +37,7 @@ class Team:
 
         print('Name: ' + self.name)
         print('ID: ' + self.id)
-        print('Size: ' + self.size)
+        print('Size: '+ str(self.size))
         print('Level: ' + self.level)
         print('\n')
 
@@ -63,9 +63,7 @@ def readTeams(file,league):
         currentMLB = 0
         level = 0
 
-        for row in f:
-
-            row = row.split(',')
+        for row in teamReader:
 
             if row[0] != currentMLB:
                 level = 0
@@ -95,9 +93,8 @@ def nameTeams(file,league):
 
             header = teamReader.next()
 
-            for row in f:
+            for row in teamReader:
 
-                row = row.split(',')
                 if league.has_key(row[0]):
                     league[row[0]].name = row[1].strip('"') + ' ' + row[3].strip('"')
 
@@ -119,13 +116,11 @@ def countPlayers(file,league):
 
         header = teamReader.next()
 
-        for row in f:
-
-            row = row.split(',')
+        for row in teamReader:
 
             if league.has_key(row[1]):
 
-                league[row[1]].size =+ 1
+                league[row[1]].size += 1
 
     return league
 
