@@ -32,7 +32,7 @@ class Team:
         self.size =-rosterSize
         self.level = level
 
-    def display():
+    def display(self):
         """Displays the team info"""
 
         print('Name: ', self.name)
@@ -120,4 +120,4 @@ if __name__ == '__main__':
     teams = countPlayers('./players.csv',teams)
 
     for team in teams:
-        team.display()
+        teams[team].display()
