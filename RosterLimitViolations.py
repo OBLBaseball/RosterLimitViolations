@@ -35,10 +35,10 @@ class Team:
     def display(self):
         """Displays the team info"""
 
-        print('Name: ', self.name)
-        print('ID: ', self.id)
-        print('Size: ', self.size)
-        print('Level: ', self.level)
+        print('Name: ' + self.name)
+        print('ID: ' + self.id)
+        print('Size: ' + self.size)
+        print('Level: ' + self.level)
         print('\n')
 
 teams = {}
@@ -70,9 +70,9 @@ def readTeams(file,league):
             if row[0] != currentMLB:
                 level = 0
                 currentMLB = row[0]
-                league[row[0]] = Team(row[0],'',0,levels[level])
+                league[row[0]] = Team(row[0].rstrip('\r\n'),'',0,levels[level])
                 level += 1
-            league[row[1]] = Team(row[1],'',0,levels[level])
+            league[row[1]] = Team(row[1].rstrip('\r\n'),'',0,levels[level])
             if level < 6:
                 level += 1
 
@@ -99,7 +99,7 @@ def nameTeams(file,league):
 
                 row = row.split(',')
                 if league.has_key(row[0]):
-                    league[row[0]].name = row[1].strip('"') + row[2].strip('"')
+                    league[row[0]].name = row[1].strip('"') + ' ' + row[3].strip('"')
 
     return league
 
@@ -124,7 +124,8 @@ def countPlayers(file,league):
             row = row.split(',')
 
             if league.has_key(row[1]):
-                league[row[1]].size += 1
+
+                league[row[1]].size =+ 1
 
     return league
 
