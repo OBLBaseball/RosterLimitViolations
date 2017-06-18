@@ -55,13 +55,18 @@ def readTeams(file,league):
 
     levels = ['MLB','AAA','AA','A+','A','A-','R']
 
-    with open(file) as f:
-
+    with open(file, 'rb') as f:
         teamReader = csv.reader(f)
+
+        header = teamReader.next()
+
         currentMLB = 0
         level = 0
 
         for row in f:
+
+            row = row.split(',')
+
             if row[0] != currentMLB:
                 level = 0
                 currentMLB = row[0]
@@ -85,12 +90,16 @@ def nameTeams(file,league):
 
     for i in range(len(league)):
 
-        with open(file) as f:
-
+        with open(file, 'rb') as f:
             teamReader = csv.reader(f)
 
+            header = teamReader.next()
+
             for row in f:
-                league[row[0]].name = row[1].strip('"') + row[2].strip('"')
+
+                row = row.split(',')
+                if league.has_key(row[0]):
+                    league[row[0]].name = row[1].strip('"') + row[2].strip('"')
 
     return league
 
@@ -104,11 +113,16 @@ def countPlayers(file,league):
     :rtype: Team{}
     """
 
-    with open(file) as f:
+    with open(file, 'rb') as f:
 
         teamReader = csv.reader(f)
 
+        header = teamReader.next()
+
         for row in f:
+
+            row = row.split(',')
+
             if league.has_key(row[1]):
                 league[row[1]].size += 1
 
