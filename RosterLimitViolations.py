@@ -32,7 +32,7 @@ class Team:
         self.size =-rosterSize
         self.level = level
 
-teams = []
+teams = {}
 
 def readTeams(file,league):
     """reads team info from csv files and stores it
@@ -40,8 +40,8 @@ def readTeams(file,league):
     :param files: file to read with team Ids
     :param league: list of teams
     :type files: str
-    :type league: Team[]
-    :rtype: Team[]
+    :type league: Team{}
+    :rtype: Team{}
     """
 
     levels = ['MLB','AAA','AA','A+','A','A-','R']
@@ -56,9 +56,9 @@ def readTeams(file,league):
             if row[0] != currentMLB:
                 level = 0
                 currentMLB = row[0]
-                league.append(Team.Team(row[0],'',0,levels[level]))
+                league[row[0]](Team.Team(row[0],'',0,levels[level]))
                 level += 1
-            league.append(Team.Team(row[1],'',0,levels[level]))
+            league[row[1]](Team.Team(row[1],'',0,levels[level]))
             if level < 6:
                 level += 1
 
@@ -70,8 +70,8 @@ def nameTeams(file,league):
     :param file: files to read with team names
     :param league: list of teams
     :type file: str
-    :type league: Team[]
-    :rtype: Team[]
+    :type league: Team{}
+    :rtype: Team{}
     """
 
     for i in range(len(league)):
@@ -80,8 +80,18 @@ def nameTeams(file,league):
 
             teamReader = csv.reader(f,delimiter=',')
 
-            for row in f:
-                if row[0] == league[i].id:
-                    league[i].name = row[1].strip('"') + row[2].strip('"')
+            league[row[0]].name = row[1].strip('"') + row[2].strip('"')
 
     return league
+
+def countPlayers(file,league):
+    """Counts number of players on each team
+
+    :param file: file to read with players and their team
+    :param league: list of teams
+    :type file: str
+    :type league: Team{}
+    :rtype: Team{}
+    """
+
+    with open(file) as f
