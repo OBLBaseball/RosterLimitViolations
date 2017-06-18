@@ -32,6 +32,15 @@ class Team:
         self.size =-rosterSize
         self.level = level
 
+    def display():
+        """Displays the team info"""
+
+        print('Name: ', self.name)
+        print('ID: ', self.id)
+        print('Size: ', self.size)
+        print('Level: ', self.level)
+        print('\n')
+
 teams = {}
 
 def readTeams(file,league):
