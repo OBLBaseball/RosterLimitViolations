@@ -15,3 +15,9 @@ files exported from OOTP 17 and placed in the same folder:
 - teams.csv
 - players.csv
 - team_afiliations.csv
+
+
+## TODO
+
+- Fix bug where MLB level players are overcounted
+- Only display teams in MLB/MiLB
