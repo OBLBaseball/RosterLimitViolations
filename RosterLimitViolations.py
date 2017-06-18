@@ -37,9 +37,9 @@ teams = []
 def readTeams(file,league):
     """reads team info from csv files and stores it
 
-    :param files: list of files to read with team/player info
+    :param files: file to read with team Ids
     :param league: list of teams
-    :type files: str[]
+    :type files: str
     :type league: Team[]
     :rtype: Team[]
     """
@@ -61,5 +61,27 @@ def readTeams(file,league):
             league.append(Team.Team(row[1],'',0,levels[level]))
             if level < 6:
                 level += 1
+
+    return league
+
+def nameTeams(file,league):
+    """Adds name to teams
+
+    :param file: files to read with team names
+    :param league: list of teams
+    :type file: str
+    :type league: Team[]
+    :rtype: Team[]
+    """
+
+    for i in range(len(league)):
+
+        with open(file) as f:
+
+            teamReader = csv.reader(f,delimiter=',')
+
+            for row in f:
+                if row[0] == league[i].id:
+                    league[i].name = row[1].strip('"') + row[2].strip('"')
 
     return league
