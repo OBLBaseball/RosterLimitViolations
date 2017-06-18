@@ -80,7 +80,8 @@ def nameTeams(file,league):
 
             teamReader = csv.reader(f,delimiter=',')
 
-            league[row[0]].name = row[1].strip('"') + row[2].strip('"')
+            for row in f:
+                league[row[0]].name = row[1].strip('"') + row[2].strip('"')
 
     return league
 
@@ -94,4 +95,6 @@ def countPlayers(file,league):
     :rtype: Team{}
     """
 
-    with open(file) as f
+    with open(file) as f:
+
+        team
