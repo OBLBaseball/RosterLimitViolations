@@ -10,11 +10,42 @@ import csv
 import fileinput
 import sys
 
+teamsByID = { '31' : 'Diamondbacks',
+            '32' : 'Braves',
+            '33' : 'Orioles',
+            '34' : 'Red Sox',
+            '35' : 'White Sox',
+            '36' : 'Cubs',
+            '37' : 'Reds',
+            '38' : 'Indians',
+            '39' : 'Rockies',
+            '40' : 'Tigers',
+            '42' : 'Astros',
+            '43' : 'Royals',
+            '44' : 'Angels',
+            '45' : 'Dodgers',
+            '41' : 'Marlins',
+            '46' : 'Brewers',
+            '47' : 'Twins',
+            '48' : 'Yankees',
+            '49' : 'Mets',
+            '50' : 'Athletics',
+            '51' : 'Phillies',
+            '52' : 'Pirates',
+            '53' : 'Padres',
+            '55' : 'Giants',
+            '54' : 'Mariners',
+            '56' : 'Cardinals',
+            '57' : 'Rays',
+            '58' : 'Rangers',
+            '59' : 'Blue Jays',
+            '60' : 'Nationals'}
+
 class Team:
 
     """A holder for team info"""
 
-    def __init__(self,id,name,rosterSize,level):
+    def __init__(self,id,name,rosterSize,level,mlbAsso):
         """Initializes a Team.
 
         :param id: the team ID, mathces with team name
@@ -31,6 +62,7 @@ class Team:
         self.name = name
         self.size =-rosterSize
         self.level = level
+        self.mlbAsso = mlbAsso
 
     def display(self):
         """Displays the team info"""
@@ -48,12 +80,17 @@ class Team:
 
         index = levels.index(self.level)
 
+#        if ((index <= 4 and self.size > 27) or (index >4 and self.size > 35)) and self.level != 'MLB':
+#            print('Name: ' + self.name)
+#            print('ID: ' + self.id)
+#            print('Size: '+ str(self.size))
+#            print('Level: ' + self.level)
+#            print('\n')
+
         if ((index <= 4 and self.size > 27) or (index >4 and self.size > 35)) and self.level != 'MLB':
-            print('Name: ' + self.name)
-            print('ID: ' + self.id)
-            print('Size: '+ str(self.size))
-            print('Level: ' + self.level)
-            print('\n')
+            if (self.mlbAsso not in mentioned_teams):
+                print('Team: ' + teamsByID[self.mlbAsso])
+                mentioned_teams.append(self.mlbAsso)
 
 teams = {}
 
@@ -83,10 +120,10 @@ def readTeams(file,league):
                 if row[0] != currentMLB:
                     level = 0
                     currentMLB = row[0]
-                    league[row[0]] = Team(row[0].rstrip('\r\n'),'',0,levels[level])
+                    league[row[0]] = Team(row[0].rstrip('\r\n'),'',0,levels[level],row[0])
                     level += 1
 
-                league[row[1]] = Team(row[1].rstrip('\r\n'),'',0,levels[level])
+                league[row[1]] = Team(row[1].rstrip('\r\n'),'',0,levels[level],row[0])
 
             if level < 6:
                 level += 1
@@ -136,8 +173,8 @@ def countPlayers(file,league):
         for row in teamReader:
 
             if league.has_key(row[0]):
-
-                league[row[0]].size += 1
+                if(row[2] == '1'):
+                    league[row[0]].size += 1
 
     return league
 
@@ -145,6 +182,8 @@ if __name__ == '__main__':
     teams = readTeams('./team_affiliations.csv',teams)
     teams = nameTeams('./teams.csv',teams)
     teams = countPlayers('./team_roster.csv',teams)
+
+    mentioned_teams = []
 
     for team in teams:
         teams[team].displayViolation()
