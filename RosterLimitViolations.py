@@ -70,7 +70,7 @@ class Team:
         print('Name: ' + self.name)
         print('ID: ' + self.id)
         print('Size: '+ str(self.size))
-        print('Level: ' + self.level)
+        print('Level: ', self.level)
         print('\n')
 
     def displayViolation(self):
@@ -78,7 +78,7 @@ class Team:
 
         levels = ['MLB','AAA','AA','A+','A','A-','R']
 
-        index = levels.index(self.level)
+        #index = levels.index(self.level)
 
 #        if ((index <= 4 and self.size > 27) or (index >4 and self.size > 35)) and self.level != 'MLB':
 #            print('Name: ' + self.name)
@@ -87,7 +87,7 @@ class Team:
 #            print('Level: ' + self.level)
 #            print('\n')
 
-        if ((index <= 4 and self.size > 27) or (index >4 and self.size > 35)) and self.level != 'MLB':
+        if ((int(self.level) <= 4 and self.size > 27) or (int(self.level) > 4 and self.size > 35)) and self.level != '1':
             if (self.mlbAsso not in mentioned_teams):
                 print('Team: ' + teamsByID[self.mlbAsso])
                 mentioned_teams.append(self.mlbAsso)
@@ -120,10 +120,10 @@ def readTeams(file,league):
                 if row[0] != currentMLB:
                     level = 0
                     currentMLB = row[0]
-                    league[row[0]] = Team(row[0].rstrip('\r\n'),'',0,levels[level],row[0])
+                    league[row[0]] = Team(row[0].rstrip('\r\n'),'',0,0,row[0])
                     level += 1
 
-                league[row[1]] = Team(row[1].rstrip('\r\n'),'',0,levels[level],row[0])
+                league[row[1]] = Team(row[1].rstrip('\r\n'),'',0,0,row[0])
 
             if level < 6:
                 level += 1
@@ -151,6 +151,7 @@ def nameTeams(file,league):
 
                 if league.has_key(row[0]):
                     league[row[0]].name = row[1].strip('"') + ' ' + row[3].strip('"')
+                    league[row[0]].level = int(row[12])
 
     return league
 
