@@ -104,29 +104,21 @@ def readTeams(file,league):
     :rtype: Team{}
     """
 
-    levels = ['MLB','AAA','AA','A+','A','A-','R']
-
     with open(file, 'rb') as f:
         teamReader = csv.reader(f)
 
         header = teamReader.next()
 
         currentMLB = 0
-        level = 0
 
         for row in teamReader:
 
             if int(row[0]) <= 60:
                 if row[0] != currentMLB:
-                    level = 0
                     currentMLB = row[0]
                     league[row[0]] = Team(row[0].rstrip('\r\n'),'',0,0,row[0])
-                    level += 1
 
                 league[row[1]] = Team(row[1].rstrip('\r\n'),'',0,0,row[0])
-
-            if level < 6:
-                level += 1
 
     return league
 
@@ -140,18 +132,16 @@ def nameTeams(file,league):
     :rtype: Team{}
     """
 
-    for i in range(len(league)):
+    with open(file, 'rb') as f:
+        teamReader = csv.reader(f)
 
-        with open(file, 'rb') as f:
-            teamReader = csv.reader(f)
+        header = teamReader.next()
 
-            header = teamReader.next()
+        for row in teamReader:
 
-            for row in teamReader:
-
-                if league.has_key(row[0]):
-                    league[row[0]].name = row[1].strip('"') + ' ' + row[3].strip('"')
-                    league[row[0]].level = int(row[12])
+            if league.has_key(row[0]):
+                league[row[0]].name = row[1].strip('"') + ' ' + row[3].strip('"')
+                league[row[0]].level = int(row[12])
 
     return league
 
