@@ -76,20 +76,10 @@ class Team:
     def displayViolation(self):
         """Displays the team info if it is under violaton"""
 
-        levels = ['MLB','AAA','AA','A+','A','A-','R']
-
-        #index = levels.index(self.level)
-
-#        if ((index <= 4 and self.size > 27) or (index >4 and self.size > 35)) and self.level != 'MLB':
-#            print('Name: ' + self.name)
-#            print('ID: ' + self.id)
-#            print('Size: '+ str(self.size))
-#            print('Level: ' + self.level)
-#            print('\n')
-
         if ((int(self.level) <= 4 and self.size > 27) or (int(self.level) > 4 and self.size > 35)) and self.level != '1':
             if (self.mlbAsso not in mentioned_teams):
                 print('Team: ' + teamsByID[self.mlbAsso])
+                print(self.display())
                 mentioned_teams.append(self.mlbAsso)
 
 teams = {}
@@ -155,6 +145,8 @@ def countPlayers(file,league):
     :rtype: Team{}
     """
 
+    DLList = checkDL('./players_roster_status.csv')
+
     with open(file, 'rb') as f:
 
         teamReader = csv.reader(f)
@@ -163,11 +155,36 @@ def countPlayers(file,league):
 
         for row in teamReader:
 
-            if league.has_key(row[0]):
+            if (league.has_key(row[0])) and (row[1] not in DLList):
                 if(row[2] == '1'):
                     league[row[0]].size += 1
 
     return league
+
+def checkDL(file):
+    """Returns list of players on DL
+
+    :param file: file to read roster status of player
+    :param playerID: Game given ID of the player
+    :type file: str
+    :type playerID: str
+    :rtype: str
+    """
+
+    isOnDL = []
+
+    with open(file, 'rb') as f:
+
+        playerReader = csv.reader(f)
+
+        header = playerReader.next()
+
+        for row in playerReader:
+
+            if(row[7] == '1'):
+                isOnDL.append(row[0])
+        print(len(isOnDL))
+        return isOnDL
 
 if __name__ == '__main__':
     teams = readTeams('./team_affiliations.csv',teams)
