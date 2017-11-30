@@ -45,17 +45,23 @@ class Team:
 
     """A holder for team info"""
 
-    def __init__(self,id,name,rosterSize,level,mlbAsso):
+    def __init__(self,id,name,rosterSize,level,mlbAsso,rookieCount=0,rookiePlayers=0):
         """Initializes a Team.
 
         :param id: the team ID, mathces with team name
         :param name: the team name, matches with team id
         :param rosterSize: the current number of players on the team
         :param level: The team's level in the organization (MLB, A, etc.)
+        :param mlbAsso: MLB org the team is associated with
+        :param rookieCount: Number of rookie teams an association has (only used in MLB level teams)
+        :param rookePLayes: Number of players total in the assocations rookie teams (only used in MLB level teams)
         :type id: int
         :type name: str
         :type rosterSize: int
         :type level: str
+        :type mlbAsso: int
+        :type rookieCount: int
+        :type rookiePlayers: int
         """
 
         self.id = id
@@ -63,6 +69,8 @@ class Team:
         self.size =-rosterSize
         self.level = level
         self.mlbAsso = mlbAsso
+        self.rookieCount = rookieCount
+        self.rookiePlayers = rookiePlayers
 
     def display(self):
         """Displays the team info"""
@@ -76,10 +84,13 @@ class Team:
     def displayViolation(self):
         """Displays the team info if it is under violaton"""
 
-        if ((int(self.level) <= 4 and self.size > 27) or (int(self.level) > 4 and self.size > 35)) and self.level != '1':
+        if (
+               ((int(self.level > 1) and (int(self.level) <= 4) and self.size > 27) or # teams A-level and above can have at most 27 players
+               (int(self.level) == 5 and self.size > 35)) or # A- teams can have at most 35 players
+                (int(self.level) == 1 and (self.rookiePlayers / self.rookieCount) > 35) # The average of total rookie players in an org can't exceed 35
+        ):
             if (self.mlbAsso not in mentioned_teams):
                 print('Team: ' + teamsByID[self.mlbAsso])
-                print(self.display())
                 mentioned_teams.append(self.mlbAsso)
 
 teams = {}
@@ -184,13 +195,27 @@ def checkDL(file):
             if(row[7] == '1'):
                 isOnDL.append(row[0])
         print(len(isOnDL))
-        return isOnDL
+
+    return isOnDL
+
+def countRookieTeams():
+    """Count the number of rookie teams and total rookie players an org has
+
+    :param team:
+    :type team:
+    """
+
+    for team in teams:
+
+        if (teamsByID.has_key(teams[team].mlbAsso) and teams[team].level == 6):
+            teams[teams[team].mlbAsso].rookieCount += 1
+            teams[teams[team].mlbAsso].rookiePlayers += teams[team].size
 
 if __name__ == '__main__':
     teams = readTeams('./team_affiliations.csv',teams)
     teams = nameTeams('./teams.csv',teams)
     teams = countPlayers('./team_roster.csv',teams)
-
+    countRookieTeams()
     mentioned_teams = []
 
     for team in teams:
